@@ -1,0 +1,41 @@
+version: 0.0.1
+type: plugin
+author: tokenzip
+name: trexapi-enhanced-llm
+label:
+  en_US: TrexAPI Enhanced LLM
+  zh_Hans: TrexAPI 增强 LLM
+  pt_BR: TrexAPI Enhanced LLM
+  ja_JP: TrexAPI Enhanced LLM
+description:
+  en_US: Wraps any OpenAI-compatible LLM with TZP interceptor — automatically resolves [TZP] markers in prompts via TrexAPI RAG retrieval before forwarding to the downstream LLM.
+  zh_Hans: 将任意 OpenAI 兼容 LLM 与 TZP 拦截器结合，自动解析 prompt 中的 [TZP] 标记并注入 RAG 检索上下文后转发至下游 LLM。
+  pt_BR: Envolve qualquer LLM compatível com OpenAI com interceptor TZP para recuperação RAG automática.
+  ja_JP: OpenAI互換LLMをTZPインターセプターでラップし、プロンプト内の[TZP]マーカーを自動的にRAG検索で解決します。
+icon: icon.svg
+created_at: "2026-03-12T00:00:00Z"
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+    storage:
+      enabled: true
+      size: 10485760
+plugins:
+  models:
+    - "provider/trexapi_enhanced.yaml"
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+privacy: "./PRIVACY.md"
+extra:
+  python:
+    source: main.py

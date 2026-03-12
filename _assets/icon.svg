@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#1A1A2E"/>
+  <path d="M16 20h32v4H16z" fill="#E94560"/>
+  <path d="M20 28h24v2H20zm0 6h20v2H20zm0 6h16v2H20z" fill="#0F3460"/>
+  <text x="32" y="56" text-anchor="middle" font-family="monospace" font-size="8" fill="#E94560">TZP</text>
+</svg>

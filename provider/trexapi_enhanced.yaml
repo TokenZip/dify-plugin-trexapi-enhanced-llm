@@ -1,0 +1,130 @@
+provider: trexapi_enhanced
+label:
+  en_US: TrexAPI Enhanced LLM
+  zh_Hans: TrexAPI 增强 LLM
+  pt_BR: TrexAPI Enhanced LLM
+  ja_JP: TrexAPI Enhanced LLM
+description:
+  en_US: Wraps an OpenAI-compatible LLM with TZP interceptor — automatically resolves [TZP] markers in prompts via TrexAPI RAG retrieval before forwarding to the downstream LLM.
+  zh_Hans: 将 OpenAI 兼容的 LLM 与 TZP 拦截器结合 — 在将请求转发给下游 LLM 前，自动通过 TrexAPI RAG 检索解析 prompt 中的 [TZP] 标记。
+  pt_BR: Envolve um LLM compatível com OpenAI com interceptor TZP — resolve automaticamente marcadores [TZP] em prompts via recuperação RAG do TrexAPI.
+  ja_JP: OpenAI互換LLMをTZPインターセプターでラップし、TrexAPI RAG検索で[TZP]マーカーを自動解決してから下流LLMに転送します。
+icon_small:
+  en_US: icon_s_en.svg
+icon_large:
+  en_US: icon_l_en.svg
+background: "#1A1A2E"
+help:
+  title:
+    en_US: Configure TrexAPI Enhanced LLM
+    zh_Hans: 配置 TrexAPI 增强 LLM
+    pt_BR: Configurar TrexAPI Enhanced LLM
+    ja_JP: TrexAPI Enhanced LLMの設定
+  url:
+    en_US: https://trexapi.com
+supported_model_types:
+  - llm
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+      pt_BR: Nome do Modelo
+      ja_JP: モデル名
+    placeholder:
+      en_US: "e.g. gpt-4o, deepseek-chat"
+      zh_Hans: "例如 gpt-4o, deepseek-chat"
+      pt_BR: "ex. gpt-4o, deepseek-chat"
+      ja_JP: "例: gpt-4o, deepseek-chat"
+  credential_form_schemas:
+    - variable: llm_api_base
+      label:
+        en_US: LLM API Base URL
+        zh_Hans: LLM API 地址
+        pt_BR: URL Base da API LLM
+        ja_JP: LLM APIベースURL
+      type: text-input
+      required: true
+      placeholder:
+        en_US: "https://api.openai.com/v1"
+        zh_Hans: "https://api.openai.com/v1"
+        pt_BR: "https://api.openai.com/v1"
+        ja_JP: "https://api.openai.com/v1"
+      help:
+        en_US: OpenAI-compatible API base URL for the downstream LLM.
+        zh_Hans: 下游 LLM 的 OpenAI 兼容 API 地址。
+        pt_BR: URL base da API compatível com OpenAI para o LLM downstream.
+        ja_JP: 下流LLMのOpenAI互換APIベースURL。
+    - variable: llm_api_key
+      label:
+        en_US: LLM API Key
+        zh_Hans: LLM API Key
+        pt_BR: Chave API do LLM
+        ja_JP: LLM APIキー
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Enter your LLM API key
+        zh_Hans: 输入 LLM API Key
+        pt_BR: Insira sua chave API do LLM
+        ja_JP: LLM APIキーを入力
+    - variable: trexapi_base_url
+      label:
+        en_US: TrexAPI Base URL
+        zh_Hans: TrexAPI 服务地址
+        pt_BR: URL Base do TrexAPI
+        ja_JP: TrexAPI ベースURL
+      type: text-input
+      required: true
+      placeholder:
+        en_US: "http://localhost:3000"
+        zh_Hans: "http://localhost:3000"
+        pt_BR: "http://localhost:3000"
+        ja_JP: "http://localhost:3000"
+      default: "http://localhost:3000"
+    - variable: trexapi_api_key
+      label:
+        en_US: TrexAPI API Key
+        zh_Hans: TrexAPI API Key
+        pt_BR: Chave API do TrexAPI
+        ja_JP: TrexAPI APIキー
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Enter your TrexAPI key
+        zh_Hans: 输入 TrexAPI 密钥
+        pt_BR: Insira sua chave TrexAPI
+        ja_JP: TrexAPIキーを入力
+    - variable: embedding_model
+      label:
+        en_US: Embedding Model
+        zh_Hans: 嵌入模型
+        pt_BR: Modelo de Embedding
+        ja_JP: 埋め込みモデル
+      type: select
+      required: false
+      default: "minilm"
+      options:
+        - value: "minilm"
+          label:
+            en_US: "MiniLM (384d, lightweight)"
+            zh_Hans: "MiniLM (384d, 轻量)"
+            pt_BR: "MiniLM (384d, leve)"
+            ja_JP: "MiniLM (384d, 軽量)"
+        - value: "bge-m3"
+          label:
+            en_US: "bge-m3 (1024d, high quality)"
+            zh_Hans: "bge-m3 (1024d, 高质量)"
+            pt_BR: "bge-m3 (1024d, alta qualidade)"
+            ja_JP: "bge-m3 (1024d, 高品質)"
+models:
+  llm:
+    predefined: []
+    position: "models/llm/_position.yaml"
+extra:
+  python:
+    provider_source: "provider/trexapi_enhanced.py"
+    model_sources:
+      - "models/llm/llm.py"
