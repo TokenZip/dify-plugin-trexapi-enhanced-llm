@@ -17,8 +17,10 @@ import httpx
 from dify_plugin.entities.model import (
     AIModelEntity,
     FetchFrom,
+    ModelPropertyKey,
     ModelType,
 )
+from dify_plugin.entities import I18nObject
 from dify_plugin.entities.model.llm import (
     LLMResult,
     LLMResultChunk,
@@ -199,9 +201,18 @@ class TrexAPIEnhancedLLM(LargeLanguageModel):
         content = choice.get("message", {}).get("content", "")
         usage_data = data.get("usage", {})
 
+        base_usage = LLMUsage.empty_usage()
         usage = LLMUsage(
-            prompt_tokens=usage_data.get("prompt_tokens", 0),
-            completion_tokens=usage_data.get("completion_tokens", 0),
+            **(
+                base_usage.model_dump()
+                | {
+                    "prompt_tokens": usage_data.get("prompt_tokens", 0),
+                    "completion_tokens": usage_data.get("completion_tokens", 0),
+                    "total_tokens": usage_data.get("total_tokens")
+                    or usage_data.get("prompt_tokens", 0)
+                    + usage_data.get("completion_tokens", 0),
+                }
+            )
         )
 
         return LLMResult(
@@ -247,9 +258,18 @@ class TrexAPIEnhancedLLM(LargeLanguageModel):
                     usage = LLMUsage.empty_usage()
                     if finish_reason and "usage" in chunk_data:
                         u = chunk_data["usage"]
+                        base_usage = LLMUsage.empty_usage()
                         usage = LLMUsage(
-                            prompt_tokens=u.get("prompt_tokens", 0),
-                            completion_tokens=u.get("completion_tokens", 0),
+                            **(
+                                base_usage.model_dump()
+                                | {
+                                    "prompt_tokens": u.get("prompt_tokens", 0),
+                                    "completion_tokens": u.get("completion_tokens", 0),
+                                    "total_tokens": u.get("total_tokens")
+                                    or u.get("prompt_tokens", 0)
+                                    + u.get("completion_tokens", 0),
+                                }
+                            )
                         )
 
                     yield LLMResultChunk(
@@ -328,13 +348,13 @@ class TrexAPIEnhancedLLM(LargeLanguageModel):
     def get_customizable_model_schema(self, model: str, credentials: dict) -> AIModelEntity:
         return AIModelEntity(
             model=model,
-            label={"en_US": model, "zh_Hans": model},
+            label=I18nObject(en_US=model, zh_Hans=model),
             model_type=ModelType.LLM,
             fetch_from=FetchFrom.CUSTOMIZABLE_MODEL,
             features=[],
             model_properties={
-                "mode": "chat",
-                "context_size": 128000,
+                ModelPropertyKey.MODE: "chat",
+                ModelPropertyKey.CONTEXT_SIZE: 128000,
             },
             parameter_rules=[],
         )
